@@ -642,19 +642,25 @@ document.querySelectorAll('nav button').forEach(btn => {
 
 /* ═══════════════════════════════ FIREBASE ═══════════════════════════════ */
 function connectFirebase() {
-  const c = FIREBASE_CONFIG;
-  if (!c.apiKey || !c.databaseURL) return; // config não preenchida — Firebase desativado
-  try {
-    if (firebase.apps.length) firebase.app().delete();
-    firebase.initializeApp(c);
-    db = firebase.database();
-    db.ref('.info/connected').on('value', s => {
-      document.getElementById('fbStatus').textContent = s.val() ? '🟢 Firebase conectado' : '🔴 Firebase offline';
-      document.getElementById('fbStatus').style.display = s.val() ? '' : 'none';
-    });
-  } catch(e) { console.warn('Firebase:', e.message); }
-}
+    const c = firebaseConfig;
 
+    if (!c.apiKey || !c.databaseURL) return;
+
+    try {
+        if (firebase.apps.length) firebase.app().delete();
+
+        firebase.initializeApp(c);
+        db = firebase.database();
+
+        db.ref(".info/connected").on("value", s => {
+            document.getElementById("fbStatus").textContent =
+                s.val() ? "🟢 Firebase conectado" : "🔴 Firebase offline";
+        });
+
+    } catch(e) {
+        console.warn(e);
+    }
+}
 /* ═══════════════════════════════ GABARITO ═══════════════════════════════ */
 function buildGabaritoGrid() {
   buildGrid('grid-port', 1, 22, 'qp', 'Português');
